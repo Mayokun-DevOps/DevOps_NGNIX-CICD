@@ -1,0 +1,25 @@
+---
+- name: Deploy simple HTML app
+  hosts: all
+  become: yes
+
+  tasks:
+    - name: Install NGINX
+      apt:
+        name: nginx
+        state: present
+        update_cache: yes
+
+    - name: Copy index.html
+      copy:
+        src: ./html/index.html
+        dest: /var/www/html/index.html
+        owner: www-data
+        group: www-data
+        mode: '0644'
+
+    - name: Restart NGINX
+      service:
+        name: nginx
+        state: restarted
+
